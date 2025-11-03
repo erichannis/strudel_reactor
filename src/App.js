@@ -14,8 +14,6 @@ import PlayButtons from './components/PlayButtons';
 import ProcButtons from "./components/ProcButtons";
 import PreprocessorTextArea from "./components/PreprocessorTextArea";
 
-let globalEditor = null;
-
 const handleD3Data = (event) => {
     console.log(event.detail);
 };
@@ -23,53 +21,64 @@ const handleD3Data = (event) => {
 export default function StrudelDemo() {
 
     const hasRun = useRef(false);
+    // use reference for strudel editor instead of const variable outside of componenet
+    const editorRef = useRef(null);
+    // use references instead of document.getelementbyid's for the elements
+    const canvasRef = useRef(null);
+    const editorContainerRef = useRef(null);
+
 
     const handlePlay = () => {
-        globalEditor.evaluate();
+        editorRef.current.evaluate();
     }
 
     const handleStop = () => {
-        globalEditor.stop();
+        editorRef.current.stop();
     }
 
     const [songText, setSongText] = useState(stranger_tune);
 
     useEffect(() => {
 
-        if (!hasRun.current) {
-            document.addEventListener("d3Data", handleD3Data);
-            console_monkey_patch();
-            hasRun.current = true;
-            //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
-            //init canvas
-            const canvas = document.getElementById('roll');
-            canvas.width = canvas.width * 2;
-            canvas.height = canvas.height * 2;
-            const drawContext = canvas.getContext('2d');
-            const drawTime = [-2, 2]; // time window of drawn haps
-            globalEditor = new StrudelMirror({
-                defaultOutput: webaudioOutput,
-                getTime: () => getAudioContext().currentTime,
-                transpiler,
-                root: document.getElementById('editor'),
-                drawTime,
-                onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
-                prebake: async () => {
-                    initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
-                    const loadModules = evalScope(
-                        import('@strudel/core'),
-                        import('@strudel/draw'),
-                        import('@strudel/mini'),
-                        import('@strudel/tonal'),
-                        import('@strudel/webaudio'),
-                    );
-                    await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
-                },
-            });
+        if (hasRun.current) return;
+        hasRun.current = true;
 
-            document.getElementById('proc').value = stranger_tune
-        }
-        globalEditor.setCode(songText);
+        document.addEventListener("d3Data", handleD3Data);
+        console_monkey_patch();
+
+        //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
+        //init canvas
+        const canvas = document.getElementById('roll');
+        canvas.width = canvas.width * 2;
+        canvas.height = canvas.height * 2;
+        const drawContext = canvas.getContext('2d');
+        const drawTime = [-2, 2]; // time window of drawn haps
+
+        const editor = new StrudelMirror({
+            defaultOutput: webaudioOutput,
+            getTime: () => getAudioContext().currentTime,
+            transpiler,
+            root: editorContainerRef.current,
+            drawTime,
+            onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
+            prebake: async () => {
+                initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
+                const loadModules = evalScope(
+                    import('@strudel/core'),
+                    import('@strudel/draw'),
+                    import('@strudel/mini'),
+                    import('@strudel/tonal'),
+                    import('@strudel/webaudio'),
+                );
+                await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
+            },
+        });
+
+        editor.setCode(songText);
+        editorRef.current = editor;
+
+    }, []);
+
     }, [songText]);
 
 
@@ -94,7 +103,7 @@ export default function StrudelDemo() {
                     </div>
                     <div className="row">
                         <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                            <div id="editor" />
+                            <div ref={editorContainerRef} id="editor" />
                             <div id="output" />
                         </div>
                         <div className="col-md-4">
@@ -102,7 +111,7 @@ export default function StrudelDemo() {
                         </div>
                     </div>
                 </div>
-                <canvas id="roll"></canvas>
+                <canvas ref={canvasRef} id="roll"></canvas>
             </main >
         </div >
     );
