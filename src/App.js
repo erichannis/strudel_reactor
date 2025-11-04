@@ -84,6 +84,14 @@ export default function StrudelDemo() {
         editorRef.current.setCode(songText);
     }, [songText]);
 
+    
+
+    const processText = (text, hush) => {
+        const replacement = hush ? '_' : '';
+        return text.replaceAll('<p1_Radio>', replacement);
+    };
+
+    const [hushMode, setHushMode] = useState(false);
 
     const handleProc = () => {
         const processed = processText(songText, hushMode);
@@ -94,6 +102,11 @@ export default function StrudelDemo() {
         handleProc();
         handlePlay();
     };
+
+    useEffect(() => {
+
+        handleProcPlay();
+    }, [hushMode]);
 
 
     return (
@@ -121,7 +134,7 @@ export default function StrudelDemo() {
                             <div id="output" />
                         </div>
                         <div className="col-md-4">
-                            <DJControls />
+                            <DJControls hushMode={hushMode} onHushChange={setHushMode}/>
                         </div>
                     </div>
                 </div>
