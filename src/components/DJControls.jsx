@@ -1,4 +1,4 @@
-const DJControls = ({ hushMode, onHushChange }) => {
+const DJControls = ({ hush, onHushChange }) => {
     return (
         <>
             <div className="input-group mb-3">
@@ -9,20 +9,10 @@ const DJControls = ({ hushMode, onHushChange }) => {
             <label htmlFor="volume_range" className="form-label">Volume</label>
             <input type="range" className="form-range" min="0" max="1" step="0.01" id="volume_range"></input>
 
-                <div className="form-check">
-                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="radioOn" checked={!hushMode} onChange={() => onHushChange(false)} />
-                    <label className="form-check-label" htmlFor="radioOn">p1: ON</label>
-                </div>
-                <div className="form-check">
-                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="radioHush" checked={hushMode} onChange={() => onHushChange(true)} />
-                    <label className="form-check-label" htmlFor="radioHush">p1: HUSH</label>
-                </div>
-            {/* <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="d2" />
-                <label className="form-check-label" htmlFor="d2">
-                    d2
-                </label>
-            </div> */}
+            <div className="form-check mb-3">
+                <input className="form-check-input" type="checkbox" id="hush_checkbox" checked={hush} onChange={(e) => onHushChange(e.target.checked)} />
+                <label className="form-check-label" htmlFor="hush_checkbox">Hush p1</label>
+            </div>
         </>
     )
 }

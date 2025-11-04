@@ -88,7 +88,7 @@ export default function StrudelDemo() {
 
     const processText = (text, hush) => {
         const replacement = hush ? '_' : '';
-        return text.replaceAll('<p1_Radio>', replacement);
+        return text.replaceAll('<p1_hush>', replacement);
     };
 
     const [hushMode, setHushMode] = useState(false);
