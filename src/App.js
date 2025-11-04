@@ -28,13 +28,6 @@ export default function StrudelDemo() {
     const editorContainerRef = useRef(null);
 
 
-    const handlePlay = () => {
-        editorRef.current.evaluate();
-    }
-
-    const handleStop = () => {
-        editorRef.current.stop();
-    }
 
     const [songText, setSongText] = useState(stranger_tune);
 
@@ -84,29 +77,36 @@ export default function StrudelDemo() {
         editorRef.current.setCode(songText);
     }, [songText]);
 
-    
 
-    const processText = (text, hush) => {
-        const replacement = hush ? '_' : '';
-        return text.replaceAll('<p1_hush>', replacement);
+    const processText = (text, hush, cpm, volume) => {
+        return text
+            .replace('<p1_hush>', hush ? '_' : '')
+            .replace('<cpm>', cpm.toString())
+            .replace('<volume>', volume.toString());
     };
-
-    const [hushMode, setHushMode] = useState(false);
 
     const handleProc = () => {
-        const processed = processText(songText, hushMode);
+        const processed = processText(songText, hushMode, cpm, volume);
         editorRef.current?.setCode(processed);
     };
+
+
+    const handlePlay = () => { editorRef.current.evaluate(); }
+    const handleStop = () => { editorRef.current.stop(); }
 
     const handleProcPlay = () => {
         handleProc();
         handlePlay();
     };
 
-    useEffect(() => {
+    const [hushMode, setHushMode] = useState(false);
+    const [cpm, setCpm] = useState(35);
+    const [volume, setVolume] = useState(1.0);
 
-        handleProcPlay();
-    }, [hushMode]);
+    useEffect(() => {
+        if (!editorRef.current) return;
+        handleProc();
+    }, [hushMode, cpm, volume]);
 
 
     return (
@@ -134,7 +134,7 @@ export default function StrudelDemo() {
                             <div id="output" />
                         </div>
                         <div className="col-md-4">
-                            <DJControls hushMode={hushMode} onHushChange={setHushMode}/>
+                            <DJControls hushMode={hushMode} cpm={cpm} volume={volume} onHushChange={setHushMode} onCpmChange={setCpm} onVolumeChange={setVolume}/>
                         </div>
                     </div>
                 </div>
