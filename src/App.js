@@ -78,15 +78,18 @@ export default function StrudelDemo() {
     }, [songText]);
 
 
-    const processText = (text, hush, cpm, volume) => {
-        return text
-            .replace('<p1_hush>', hush ? '_' : '')
+    const processText = (songText, hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume) => {
+        return songText
+            .replace('<hush_bass>', hushBassline ? '_' : '')
+            .replace('<hush_arp>', hushMainArp ? '_' : '')
+            .replace('<hush_drums1>', hushDrums1 ? '_' : '')
+            .replace('<hush_drums2>', hushDrums2 ? '_' : '')
             .replace('<cpm>', cpm.toString())
             .replace('<volume>', volume.toString());
     };
 
     const handleProc = () => {
-        const processed = processText(songText, hushMode, cpm, volume);
+        const processed = processText(songText, hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume);
         editorRef.current?.setCode(processed);
     };
 
@@ -99,14 +102,17 @@ export default function StrudelDemo() {
         handlePlay();
     };
 
-    const [hushMode, setHushMode] = useState(false);
+    const [hushBassline, setHushBassLine] = useState(false);
+    const [hushMainArp, setHushMainArp] = useState(false);
+    const [hushDrums1, setHushDrums1] = useState(false);
+    const [hushDrums2, setHushDrums2] = useState(false);
     const [cpm, setCpm] = useState(35);
     const [volume, setVolume] = useState(1.0);
 
     useEffect(() => {
         if (!editorRef.current) return;
         handleProc();
-    }, [hushMode, cpm, volume]);
+    }, [hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume]);
 
 
     return (
@@ -134,7 +140,7 @@ export default function StrudelDemo() {
                             <div id="output" />
                         </div>
                         <div className="col-md-4">
-                            <DJControls hushMode={hushMode} cpm={cpm} volume={volume} onHushChange={setHushMode} onCpmChange={setCpm} onVolumeChange={setVolume}/>
+                            <DJControls hushBassline={hushBassline} hushMainArp={hushMainArp} hushDrums1={hushDrums1} hushDrums2={hushDrums2} cpm={cpm} volume={volume} onHushMainArpChange={setHushMainArp} OnHushBassLineChange={setHushBassLine} onHushDrums1Change={setHushDrums1} onHushDrums2Change={setHushDrums2} onCpmChange={setCpm} onVolumeChange={setVolume}/>
                         </div>
                     </div>
                 </div>
