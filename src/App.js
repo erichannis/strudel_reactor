@@ -79,7 +79,21 @@ export default function StrudelDemo() {
 
     }, []);
 
+    // make live changes happen instantly in REPL
+    useEffect(() => {
+        editorRef.current.setCode(songText);
     }, [songText]);
+
+
+    const handleProc = () => {
+        const processed = processText(songText, hushMode);
+        editorRef.current?.setCode(processed);
+    };
+
+    const handleProcPlay = () => {
+        handleProc();
+        handlePlay();
+    };
 
 
     return (
@@ -95,7 +109,7 @@ export default function StrudelDemo() {
                         <div className="col-md-4">
 
                             <nav>
-                                <ProcButtons />
+                                <ProcButtons onProc={handleProc} onProcPlay={handleProcPlay}/>
                                 <br />
                                 <PlayButtons onPlay={handlePlay} onStop={handleStop}/>
                             </nav>
