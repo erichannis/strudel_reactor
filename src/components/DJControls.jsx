@@ -18,6 +18,24 @@ const DJControls = ({
         localStorage.setItem('djSettings', JSON.stringify(settings));
         console.log("Settings saved:", settings);
     };
+
+    const handleLoadSettings = () => {
+        const saved = localStorage.getItem('djSettings');
+        if (saved) {
+                const settings = JSON.parse(saved);
+                OnHushBassLineChange(settings.hushBassline);
+                onHushMainArpChange(settings.hushMainArp);
+                onHushDrums1Change(settings.hushDrums1);
+                onHushDrums2Change(settings.hushDrums2);
+                onCpmChange(settings.cpm);
+                onVolumeChange(settings.volume);
+                onArpSelectionChange(settings.arpSelection);
+                console.log("Settings loaded:", settings);
+
+        } else {
+            console.warn("No saved settings found.");
+        }
+    };
     
     return (
         <>
@@ -79,7 +97,7 @@ const DJControls = ({
 
             <div className="btn-group mt-3" role="group">
                 <button className="btn btn-outline-success" onClick={handleSaveSettings}>Save Settings</button>
-                <button className="btn btn-outline-secondary" >Load Settings</button>
+                <button className="btn btn-outline-secondary" onClick={handleLoadSettings}>Load Settings</button>
             </div>
         </>
     )
