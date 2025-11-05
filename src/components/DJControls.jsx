@@ -22,16 +22,19 @@ const DJControls = ({
     const handleLoadSettings = () => {
         const saved = localStorage.getItem('djSettings');
         if (saved) {
+            try {
                 const settings = JSON.parse(saved);
-                OnHushBassLineChange(settings.hushBassline);
-                onHushMainArpChange(settings.hushMainArp);
-                onHushDrums1Change(settings.hushDrums1);
-                onHushDrums2Change(settings.hushDrums2);
-                onCpmChange(settings.cpm);
-                onVolumeChange(settings.volume);
-                onArpSelectionChange(settings.arpSelection);
+                if (settings.hushBassline !== undefined) OnHushBassLineChange(settings.hushBassline);
+                if (settings.hushMainArp !== undefined) onHushMainArpChange(settings.hushMainArp);
+                if (settings.hushDrums1 !== undefined) onHushDrums1Change(settings.hushDrums1);
+                if (settings.hushDrums2 !== undefined) onHushDrums2Change(settings.hushDrums2);
+                if (settings.cpm !== undefined) onCpmChange(settings.cpm);
+                if (settings.volume !== undefined) onVolumeChange(settings.volume);
+                if (settings.arpSelection !== undefined) onArpSelectionChange(settings.arpSelection);
                 console.log("Settings loaded:", settings);
-
+            } catch (err) {
+                console.error("Error parsing saved settings:", err);
+            }
         } else {
             console.warn("No saved settings found.");
         }
