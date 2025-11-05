@@ -4,6 +4,20 @@ const DJControls = ({
     onCpmChange, onVolumeChange,
     arpSelection, onArpSelectionChange
 }) => {
+
+    const handleSaveSettings = () => {
+        const settings = {
+            hushBassline,
+            hushMainArp,
+            hushDrums1,
+            hushDrums2,
+            cpm,
+            volume,
+            arpSelection
+        };
+        localStorage.setItem('djSettings', JSON.stringify(settings));
+        console.log("Settings saved:", settings);
+    };
     
     return (
         <>
@@ -61,6 +75,11 @@ const DJControls = ({
                         Arpeggiator 2 (High + Complex)
                     </label>
                 </div>
+            </div>
+
+            <div className="btn-group mt-3" role="group">
+                <button className="btn btn-outline-success" onClick={handleSaveSettings}>Save Settings</button>
+                <button className="btn btn-outline-secondary" >Load Settings</button>
             </div>
         </>
     )
