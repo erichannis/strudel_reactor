@@ -1,4 +1,10 @@
-const DJControls = ({ hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume, OnHushBassLineChange, onHushMainArpChange, onHushDrums1Change, onHushDrums2Change, onCpmChange, onVolumeChange }) => {
+const DJControls = ({
+    hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume,
+    OnHushBassLineChange, onHushMainArpChange, onHushDrums1Change, onHushDrums2Change,
+    onCpmChange, onVolumeChange,
+    arpSelection, onArpSelectionChange
+}) => {
+    
     return (
         <>
             <div className="input-group mb-3">
@@ -24,6 +30,37 @@ const DJControls = ({ hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, vo
             <div className="form-check mb-3">
                 <input className="form-check-input" type="checkbox" id="hush_checkbox_drums_2" checked={hushDrums2} onChange={(e) => onHushDrums2Change(e.target.checked)} />
                 <label className="form-check-label" htmlFor="hush_checkbox_drums_2">Hush Drums 2</label>
+            </div>
+            <div className="mt-3">
+                <label className="form-label">Arpeggiator Type</label>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="arpSelection"
+                        id="arp1"
+                        value="arpeggiator1"
+                        checked={arpSelection === "arpeggiator1"}
+                        onChange={(e) => onArpSelectionChange(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="arp1">
+                        Arpeggiator 1 (Low + Rhythmic)
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="arpSelection"
+                        id="arp2"
+                        value="arpeggiator2"
+                        checked={arpSelection === "arpeggiator2"}
+                        onChange={(e) => onArpSelectionChange(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="arp2">
+                        Arpeggiator 2 (High + Complex)
+                    </label>
+                </div>
             </div>
         </>
     )

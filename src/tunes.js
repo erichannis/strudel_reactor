@@ -51,7 +51,7 @@ note(pick(basslines, bass))
 
 
 <hush_arp>main_arp: 
-note(pick(arpeggiator1, "<0 1 2 3>/2"))
+note(pick(<arp_selection>, "<0 1 2 3>/2"))
 .sound("supersaw")
 .lpf(300)
 .adsr("0:0:.5:.1")

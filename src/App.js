@@ -85,11 +85,12 @@ export default function StrudelDemo() {
             .replace('<hush_drums1>', hushDrums1 ? '_' : '')
             .replace('<hush_drums2>', hushDrums2 ? '_' : '')
             .replace('<cpm>', cpm.toString())
-            .replaceAll('<volume>', volume.toString());
+            .replaceAll('<volume>', volume.toString())
+            .replace('<arp_selection>', arpSelection);
     };
 
     const handleProc = () => {
-        const processed = processText(songText, hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume);
+        const processed = processText(songText, hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume, arpSelection);
         editorRef.current?.setCode(processed);
     };
 
@@ -108,11 +109,12 @@ export default function StrudelDemo() {
     const [hushDrums2, setHushDrums2] = useState(false);
     const [cpm, setCpm] = useState(35);
     const [volume, setVolume] = useState(1.0);
+    const [arpSelection, setArpSelection] = useState("arpeggiator1");
 
     useEffect(() => {
         if (!editorRef.current) return;
         handleProcPlay();
-    }, [hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume]);
+    }, [hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume, arpSelection]);
 
 
     return (
@@ -147,6 +149,7 @@ export default function StrudelDemo() {
                                 hushDrums2={hushDrums2} onHushDrums2Change={setHushDrums2}
                                 cpm={cpm} onCpmChange={setCpm}
                                 volume={volume} onVolumeChange={setVolume}
+                                arpSelection={arpSelection} onArpSelectionChange={setArpSelection}
                             />
                         </div>
                     </div>
