@@ -118,30 +118,41 @@ export default function StrudelDemo() {
 
 
     return (
-        <div>
-            <h2>Strudel Demo</h2>
-            <main>
+        <div className="container-fluid py-4 bg-light min-vh-100">
+            <div className="text-center mb-4">
+                <h2 className="fw-bold text-primary mb-1">🎵 Strudel Studio</h2>
+                <p className="text-muted">Create, tweak, and perform algorithmic music with live control</p>
+            </div>
 
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+            <main className="row g-4">
+                {/* Left Side: Preprocessor & CodeMirror */}
+                <div className="col-md-8">
+                    <div className="card shadow-sm border-0">
+                        <div className="card-header bg-primary text-white fw-semibold">Code Preprocessor</div>
+                        <div className="card-body">
                             <PreprocessorTextArea defaultValue={songText} onChange={(e) => setSongText(e.target.value)} />
-                        </div>
-                        <div className="col-md-4">
-
-                            <nav>
+                            <div className="d-flex justify-content-between align-items-center mt-3">
                                 <ProcButtons onProc={handleProc} onProcPlay={handleProcPlay} />
-                                <br />
                                 <PlayButtons onPlay={handlePlay} onStop={handleStop} />
-                            </nav>
+                            </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                            <div ref={editorContainerRef} id="editor" />
-                            <div id="output" />
+
+                    <div className="card shadow-sm border-0 mt-4">
+                        <div className="card-header bg-secondary text-white fw-semibold">Live Editor & Output</div>
+                        <div className="card-body p-0">
+                            <div ref={editorContainerRef} id="editor" className="border rounded p-2 bg-white" />
+                            <div id="output" className="mt-2 text-muted small ps-2"></div>
+                            <canvas ref={canvasRef} id="roll" className="w-100 mt-3 border rounded"></canvas>
                         </div>
-                        <div className="col-md-4">
+                    </div>
+                </div>
+
+                {/* Right Side: DJ Controls */}
+                <div className="col-md-4">
+                    <div className="card shadow-sm border-0 h-100">
+                        <div className="card-header bg-dark text-white fw-semibold">DJ Controls</div>
+                        <div className="card-body">
                             <DJControls
                                 hushBassline={hushBassline} onHushMainArpChange={setHushMainArp}
                                 hushMainArp={hushMainArp} OnHushBassLineChange={setHushBassLine}
@@ -154,10 +165,7 @@ export default function StrudelDemo() {
                         </div>
                     </div>
                 </div>
-                <canvas ref={canvasRef} id="roll"></canvas>
-            </main >
-        </div >
+            </main>
+        </div>
     );
-
-
 }
