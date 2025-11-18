@@ -118,6 +118,7 @@ export default function StrudelDemo() {
 
 
     return (
+        <>
         <div className="container-fluid py-4 bg-light min-vh-100">
             <div className="text-center mb-4">
                 <h2 className="fw-bold text-primary mb-1">🎵 Strudel Studio</h2>
@@ -141,9 +142,9 @@ export default function StrudelDemo() {
                     <div className="card shadow-sm border-0 mt-4">
                         <div className="card-header bg-secondary text-white fw-semibold">Live Editor & Output</div>
                         <div className="card-body p-0">
-                            <div ref={editorContainerRef} id="editor" className="border rounded p-2 bg-white" />
+                            <div ref={editorContainerRef} id="editor" className="border rounded p-2" />
                             <div id="output" className="mt-2 text-muted small ps-2"></div>
-                            <canvas ref={canvasRef} id="roll" className="w-100 mt-3 border rounded"></canvas>
+                            
                         </div>
                     </div>
                 </div>
@@ -167,5 +168,7 @@ export default function StrudelDemo() {
                 </div>
             </main>
         </div>
+        <canvas ref={canvasRef} id="roll"></canvas>
+        </>
     );
 }
