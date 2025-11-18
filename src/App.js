@@ -13,10 +13,7 @@ import DJControls from './components/DJControls';
 import PlayButtons from './components/PlayButtons';
 import ProcButtons from "./components/ProcButtons";
 import PreprocessorTextArea from "./components/PreprocessorTextArea";
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
+import D3Graph from './components/D3Graph';
 
 export default function StrudelDemo() {
 
@@ -27,9 +24,8 @@ export default function StrudelDemo() {
     const canvasRef = useRef(null);
     const editorContainerRef = useRef(null);
 
-
-
     const [songText, setSongText] = useState(stranger_tune);
+    const [d3Array, setD3Array] = useState([]);
 
     useEffect(() => {
 
@@ -116,6 +112,11 @@ export default function StrudelDemo() {
         handleProcPlay();
     }, [hushBassline, hushMainArp, hushDrums1, hushDrums2, cpm, volume, arpSelection]);
 
+    // Update d3 array as new logging data comes in through strudel
+    const handleD3Data = (event) => {
+        console.log(event.detail);
+        setD3Array(event.detail);
+    };
 
     return (
         <>
@@ -163,6 +164,7 @@ export default function StrudelDemo() {
                                 volume={volume} onVolumeChange={setVolume}
                                 arpSelection={arpSelection} onArpSelectionChange={setArpSelection}
                             />
+                            <D3Graph data={d3Array} />
                         </div>
                     </div>
                 </div>
